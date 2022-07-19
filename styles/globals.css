@@ -14,3 +14,48 @@ a {
 * {
   box-sizing: border-box;
 }
+.footer{
+
+  position: fixed;
+  bottom: 0%;
+  z-index: 200;
+  border: 1px solid white;
+  width: 87%;
+  background-color: black;
+  
+}
+
+.links > ul >li{
+  text-decoration: none;
+  list-style: none;
+  margin: 10px 10px 0px 0px;
+  cursor: pointer;
+}
+
+.links > ul >li:focus{
+  background-color: yellow;
+}
+.blog{
+  display: flex;
+  flex-direction: column;
+  border: 2px solid white;
+}
+/* .home{
+  overflow: scroll;
+
+}
+.home::-webkit-scrollbar{
+  width: 2px;
+} */
+
+
+.form{
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; */
+  width: 60% !important;
+  height: 60vh;
+  /* border: 1px solid red; */
+  margin-top: 20px;
+}
