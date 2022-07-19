@@ -8,6 +8,12 @@ import {
   Textarea,
   Button,
 } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from "@chakra-ui/react";
 const Contact = () => {
   const [isSending, setIsSending] = useState(false);
   const [contactData, setContactData] = useState({
@@ -15,40 +21,55 @@ const Contact = () => {
     number: undefined,
     query: "",
   });
-  const [emailError,setEmailError]=useState(false);
-  const [numberError,setNumberError]=useState(false);
-  const [queryError,setQueryError]=useState(false);
+  const [isUpload, setIsUpload] = useState(false);
+  const [show, setShow] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [numberError, setNumberError] = useState(false);
+  const [queryError, setQueryError] = useState(false);
 
   const onChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     setContactData({ ...contactData, [name]: value });
   };
-  const onClick = async(e) => {
+  const onClick = async (e) => {
     e.preventDefault();
     setIsSending(true);
-    
-    contactData.email===''
-      ? setEmailError(true)
-      : setEmailError(false);
-    contactData.number===undefined
+
+    contactData.email === "" ? setEmailError(true) : setEmailError(false);
+    contactData.number === undefined
       ? setNumberError(true)
       : setNumberError(false);
-    contactData.query===''
-      ? setQueryError(true)
-      : setQueryError(false);
+    contactData.query === "" ? setQueryError(true) : setQueryError(false);
 
-    let response= await fetch('/api/contact',{
-      method:'POST',
-      body:JSON.stringify(contactData),
-      headers:{
-        'Content-Type':'application/json'
+    if (contactData.email && contactData.number && contactData.query) {
+      let response = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(contactData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      response = await response.json();
+
+      if (!response.isError) {
+        setIsUpload(true);
+        setShow(true);
+      } else {
+        setIsUpload(false);
+        setShow(true);
       }
-    });
-
-    response= await response.json();
-    
-    setIsSending(false);
+      setTimeout(() => {
+        setShow(false);
+      }, 1000);
+      setIsSending(false);
+      setContactData({
+        email: "",
+        number: '',
+        query: "",
+      });
+    }
   };
   return (
     <>
@@ -58,6 +79,23 @@ const Contact = () => {
         name="contact"
       />
       <div className="container form mt-5">
+        {show ? (
+          <div className="row mt-1 mb-2">
+            <div className="col-md-12 col-12 col-xs-12 mx-auto">
+              <Alert status={isUpload ? "success" : "error"}>
+                <AlertIcon />
+                <AlertTitle>
+                  {isUpload
+                    ? "Your Query Successfully Upload"
+                    : "Upload Failed !"}
+                </AlertTitle>
+                {/* <AlertDescription>
+              {isUpload ? "success" : "error"}
+              </AlertDescription> */}
+              </Alert>
+            </div>
+          </div>
+        ) : null}
         <div className="row mt-2">
           <div className="col-md-6 col-12 col-xs-6 col-lg-6 mx-auto">
             <FormControl>
