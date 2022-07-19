@@ -1,6 +1,7 @@
 import React from "react";
 import Blog from "../Components/Blog";
-// import Data from "../Data";
+import Data from '../BlogData.json';
+
 import Title from "../Components/Title";
 const HomePage = () => {
   return (
@@ -10,9 +11,9 @@ const HomePage = () => {
         description="Rendering Blogs of nextjs"
         name="home"
       />
-      {/* <div className="container mt-2">
+      <div className="container mt-2">
           {Data.length ==0 ? null: Data.map((item)=><Blog item={item} key={item.id}/>)}
-      </div> */}
+      </div>
     </>
   );
 };
